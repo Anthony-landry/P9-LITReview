@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{# Load templatetags #}
+{%  load class_tag %}
+
+{# Load CSS and JavaScript #}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}
+    ... {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <section class="py-5 mt-5">
+        <h1 style="text-align: center;">Créer une critique</h1>
+
+                <section class="py-5 mt-5">
+                    <div class="container border-primary">
+                        <p>Vous êtes en train de poster en réponse à</p>
+                        <div class="container border-primary shadow py-4 py-xl-5">
+                            <div>
+                                    <p class="card-title ml-2">{{ ticket.user }} a demandé une critique</p>
+                            </div>
+                            <div class="text-end">
+                                <p style="margin-right: 0;">{{ ticket.time_created|date:"H:i, d F Y" }}</p>
+                                <div>
+                                    <p class="fs-5 text-start">{{ ticket.title }}</p>
+                                    <p class="fs-5 text-start">{{ ticket.description }}</p>
+                                    <img class="img-fluid d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start" src="{{ ticket.image_url }}" alt="{{ ticket.image }}">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+
+        <div class="container py-4 py-xl-5">
+
+            <form method="post" data-bs-theme="light" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+
+                <div class="d-block d-xl-flex flex-shrink-0 justify-content-xl-end" style="margin-top: 10px;">
+                    <button class="btn btn-primary" type="submit" style="border-radius: 10px;">Envoyer</button>
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

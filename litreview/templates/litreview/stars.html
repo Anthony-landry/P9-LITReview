@@ -1,0 +1,8 @@
+{% load static %}
+<div class="django-starfield" id="django-starfield">
+ {% for i in '54321' %}
+  <input type="checkbox" name="newreview" id="newreview-rating-{{ forloop.counter0 }}"
+         value="{{ i }}" {% if rating == i %}checked="checked"{% endif %} disabled/>
+  <label for="newreview-rating-{{ forloop.counter0 }}"><span>{{ i }}</span></label>
+ {% endfor %}
+</div>

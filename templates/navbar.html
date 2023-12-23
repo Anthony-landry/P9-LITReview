@@ -1,0 +1,23 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-md fixed-top flex-shrink-1 navbar-shrink py-3 navbar-light" id="mainNav">
+    <div style="border: 2px solid blue" class="container-fluid">
+        <a class="navbar-brand d-flex justify-content-xxl-end" href="http://127.0.0.1:8000/flux/">
+        <div style="text-align: center;border: 2px solid red">LITReview</div>
+        </a>
+        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+            <span class="visually-hidden">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1" style="display: none;">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"></li>
+            </ul>
+            <a href="{% url 'flux' %}" style="text-decoration: none;margin: 10px;">Flux</a>
+            <a href="{% url 'accounts:posts' %}" style="text-decoration: none;margin: 10px;">Posts</a>
+            <a href="{% url 'accounts:follow' %}" style="text-decoration: none;margin: 10px;">Abonnement</a>
+            <a href="{% url 'accounts:logout' %}" style="text-decoration: none;margin: 10px;">Se déconnecter </a> : {{ request.user.username }}
+        </div>
+    </div>
+</nav>
+

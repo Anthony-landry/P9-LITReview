@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{# Load templatetags #}
+{% load class_tag %}
+{# Load CSS and JavaScript #}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+
+{% block title %}
+    Posts -
+{% endblock title %}
+
+<section class="py-5 mt-5">
+	<main>
+		<h1 class="text-center">Vos posts</h1>
+	</main>
+	{% for item in tickets_and_reviews %}
+        {% if item|classname == "Review" %}
+            {% if item.ticket.user == item.user %}
+
+	<div class="container border-primary shadow py-4 py-xl-5">
+		<div>
+			<p class="fs-5">Vous avez publié une critique</p>
+		</div>
+		<div class="text-end">
+			<p style="margin-right: 0">{{ item.time_created|date:"H:i, d F Y" }}</p>
+			<div class="fs-3 fw-semibold text-start">
+				{{ item.headline }} - {% include 'litreview/stars.html' with rating=item.rating|slugify %}
+			</div>
+			<div>
+				<p class="fs-5 text-start">{{ item.body }}</p>
+			</div>
+			<div
+				class="border-1 border-primary-subtle shadow"
+				style="border-width: 1px; border-style: solid; padding: 15px"
+			>
+				<p class="fs-5 text-start">Ticket -Vous</p>
+				<p class="fs-5 text-end">{{ item.ticket.time_createdtime_created }}</p>
+				<p class="fs-5 text-start">{{ item.ticket.title }}</p>
+				<img
+					class="img-fluid d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start"
+					src="{{ item.ticket.image_url }}"
+				/>
+			</div>
+		</div>
+		<div class="d-xxl-flex justify-content-xxl-end" style="margin-top: 20px">
+			<div class="d-xxl-flex justify-content-xxl-end" style="margin-top: 20px;">
+				<a
+					class="btn btn-primary text-end d-xxl-flex"
+					style="border-radius: 10px; padding: 15px 24px; margin-right: 20px;"
+					href="{% url 'accounts:modify-post' pk=item.pk %}"
+					>Modifier
+				</a>
+				<a
+					class="btn btn-primary text-end d-xxl-flex"
+					style="border-radius: 10px; padding: 15px 24px"
+					href="{% url 'accounts:delete-post' id=item.id %}"
+					>Supprimer
+				</a>
+			</div>
+		</div>
+		<div class="container border-primary shadow py-4 py-xl-5">
+			<div>
+				<p class="fs-5">Vous avez publié un ticket</p>
+			</div>
+			<div class="text-end">
+				<p style="margin-right: 0">
+					{{ item.ticket.time_created|date:"H:i, d F Y" }}
+				</p>
+				<p class="fs-5 text-start">{{ item.ticket.title }}</p>
+				<img
+					class="img-fluid d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start"
+					src="{{ item.ticket.image_url }}"
+				/>
+			</div>
+			<div class="d-xxl-flex justify-content-xxl-end" style="margin-top: 20px">
+				<a
+					class="btn btn-primary text-end d-xxl-flex"
+					style="border-radius: 10px; padding: 15px 24px; margin-right: 20px;"
+					href="{% url 'accounts:modify-ticket' pk=item.ticket.pk %}"
+					>Modifier
+				</a>
+				<a
+					class="btn btn-primary text-end d-xxl-flex"
+					style="border-radius: 10px; padding: 15px 24px"
+					href="{% url 'accounts:delete-ticket' pk=item.ticket.pk %}"
+					>Supprimer
+				</a>
+			</div>
+		</div>
+	</div>
+	{% else %}
+	<div class="container border-primary shadow py-4 py-xl-5">
+		<div>
+			<p class="fs-5">Vous avez publié une critique</p>
+		</div>
+		<div class="text-end">
+			<p style="margin-right: 0">{{ item.time_created|date:"H:i, d F Y"}}</p>
+			<div>
+				<p class="fs-3 fw-semibold text-start">
+					{{ item.headline }} - {% include 'litreview/stars.html' with rating=item.rating|slugify %}&nbsp;
+				</p>
+			</div>
+			<div>
+				<p class="fs-5 text-start">{{ item.body }}</p>
+			</div>
+			<div
+				class="border-1 border-primary-subtle shadow"
+				style="border-width: 1px; border-style: solid; padding: 15px"
+			>
+				<p class="fs-5 text-start">Ticket - {{ item.ticket.user.username }}</p>
+				<p class="fs-5 text-start">{{ item.ticket.title }}</p>
+				<img
+					class="img-fluid d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start"
+					src="{{ item.ticket.image_url }}"
+				/>
+			</div>
+		</div>
+		<div class="d-xxl-flex justify-content-xxl-end" style="margin-top: 20px">
+			<a
+				class="btn btn-primary text-end d-xxl-flex"
+				style="border-radius: 10px; padding: 15px 24px; margin-right: 20px;"
+				href="{% url 'accounts:modify-post' pk=item.pk %}"
+				>Modifier
+			</a>
+			<a
+				class="btn btn-primary text-end d-xxl-flex"
+				style="border-radius: 10px; padding: 15px 24px"
+				href="{% url 'accounts:delete-post' id=item.id %}"
+				>Supprimer
+			</a>
+		</div>
+	</div>
+
+	{% endif %}
+    {% elif item|classname == "Ticket" %}
+	{% if not item.linked_to_user_review %}
+	<div class="container border-primary shadow py-4 py-xl-5">
+		<div>
+			<p class="fs-5">Vous avez publié un ticket</p>
+		</div>
+		<div class="text-end">
+			<p style="margin-right: 0">{{ item.time_created|date:"H:i, d F Y" }}</p>
+			<p class="fs-5 text-start">{{ item.title }}</p>
+			<img
+				class="img-fluid d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start"
+				src="{{ item.image_url }}"
+			/>
+		</div>
+		<div class="d-xxl-flex justify-content-xxl-end" style="margin-top: 20px">
+			<a
+				class="btn btn-primary text-end d-xxl-flex"
+				style="border-radius: 10px; padding: 15px 24px; margin-right: 20px;"
+				href="{% url 'accounts:modify-ticket' pk=item.pk %}"
+				>Modifier
+			</a>
+			<a
+				class="btn btn-primary text-end d-xxl-flex"
+				style="border-radius: 10px; padding: 15px 24px"
+				href="{% url 'accounts:delete-ticket' pk=item.pk %}"
+				>Supprimer
+			</a>
+		</div>
+	</div>
+	{% endif %}
+	{% endif %}
+    {% endfor %}
+</section>
+{% endblock content %}

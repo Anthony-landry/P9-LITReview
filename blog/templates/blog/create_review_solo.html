@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{# Load templatetags #}
+{%  load class_tag %}
+
+{# Load CSS and JavaScript #}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}
+    ... {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <section class="py-5 mt-5">
+        <form method="post" data-bs-theme="light" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Créer une critique&nbsp;</h1>
+            <div class="container py-4 py-xl-5">
+                <p>Livre / Article </p>
+                    {% bootstrap_form new_ticket_form %}
+            </div>
+
+{#            <h1 style="text-align: center;">critique</h1>#}
+
+            <div class="container py-4 py-xl-5">
+                <p>Critique</p>
+                 {% csrf_token %}
+                    {% bootstrap_form new_review_form %}
+
+                    <div class="d-block d-xl-flex flex-shrink-0 justify-content-xl-end" style="margin-top: 10px;">
+                        <button class="btn btn-primary" type="submit" style="border-radius: 10px;">Envoyer</button>
+                    </div>
+
+            </div>
+        </form>
+    </section>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

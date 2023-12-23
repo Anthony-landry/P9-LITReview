@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{# Load templatetags #}
+{% load class_tag %}
+
+{# Load CSS and JavaScript #}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block content %}
+    <section class="py-5 mt-5">
+        <h1 style="text-align: center;">Modifier votre critique</h1>
+        <div class="container py-4 py-xl-5">
+            <h2 class="text-start" style="text-align: center;margin-top: 20px;">Vous êtes en train de poster en réponse
+                à</h2>
+            <div class="border-3 border-primary shadow"
+                 style="margin: 20px;padding: 20px;border-width: 4px;border-color: var(--bs-body-color);">
+                <p style="text-align: right;font-size: 18px;margin-bottom: 0px;">{{ post.time_created|date:"H:i, d F Y"  }}</p>
+                <p style="font-size: 20px;">{{ post.user.username }}</p>
+                <p style="font-size: 20px;">{{ post.headline }}</p>
+                <p style="font-size: 20px;">{{ post.body }}</p>
+                <img src="{{ post.ticket.image_url }}">
+            </div>
+            <form method="post" enctype="multipart/form-data">
+            <div style="width: 1000px;">
+                <h2 class="text-start" style="text-align: center;margin-top: 50px;">Critique</h2>
+                {% csrf_token %}
+                {#                <div>#}
+                <p class="fs-5 fw-semibold" style="margin-left: 20px;margin-top: 30px;">Titre</p>
+                <input class="d-flex flex-shrink-1" type="text"
+                       style="margin-bottom: 2rem;display: flex;width: 1000px;padding: 10px;max-width: 1000px;margin-left: 20px;"
+                       name="title"
+                >
+                <p class="fs-5 fw-semibold" style="margin-left: 20px;">Note</p>
+                <div class="django-starfield" id="django-starfield-{{ widget.name }}">
+                 {% for i in '54321' %}
+                  <input type="radio" name="rating" id="{{ widget.name }}-{{ forloop.counter0 }}"
+                         value="{{ i }}" {% if widget.value == i|stringformat:'i' %}checked="checked"{% endif %} />
+                  <label for="{{ widget.name }}-{{ forloop.counter0 }}"><span>{{ i }}</span></label>
+                 {% endfor %}
+                </div>
+
+                <p class="fs-5 fw-semibold" style="margin-left: 20px;margin-top: 35px;">Commentaire</p>
+                <textarea
+                        class="border-primary focus-ring form-control-lg d-flex flex-shrink-1"
+                        style="display: flex;position: relative;padding-right: 0px;margin-bottom: 4px;margin-right: 6px;width: 1000px;height: 300px;max-width: 1000px;margin-left: 20px;"
+                        name = "body"
+                        autofocus="">
+                </textarea>
+            </div>
+                <div class="d-block d-xl-flex flex-shrink-0 justify-content-xl-end" style="margin-top: 100px;">
+                <button class="btn btn-primary" type="submit"
+                        style="border-radius: 10px;padding: 16px;padding-right: 80px;padding-left: 80px;">Envoyer
+                </button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </section>
+{% endblock content %}

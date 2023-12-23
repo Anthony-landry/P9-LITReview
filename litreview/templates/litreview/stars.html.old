@@ -1,0 +1,23 @@
+{% load static %}
+<div class="django-starfield" id="django-starfield">
+ {% for i in '1 2 3' %}
+  <input type="radio" name="" id="-{{ forloop.counter0 }}"
+         value="{{ i }}" {% if i < rating %}checked="checked"{% endif %} />
+  <label for="-{{ forloop.counter0 }}"><span>{{ i }}</span></label>
+ {% endfor %}
+</div>
+<link rel="stylesheet" href="{% static 'django_starfield.css' %}" />
+{% if codepoint %}
+<style type="text/css">
+ #django-starfield-{{ widget.name }} label::before {
+  content: '\{{ codepoint }}';
+ }
+</style>
+{% endif %}
+{% if colour %}
+<style type="text/css">
+ #django-starfield-{{ widget.name }} label {
+  color: {{ colour }};
+ }
+</style>
+{% endif %}

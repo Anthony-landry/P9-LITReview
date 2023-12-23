@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{# Load templatetags #}
+{%  load class_tag %}
+
+{# Load CSS and JavaScript #}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}
+    Abonnement -
+{% endblock title %}
+
+{% block content %}
+    <section class="py-5">
+        <div class="container py-5">
+            <h2 class="fs-4 fw-bolder text-center" style="margin-bottom: 2rem;">Suivre d'autres utilisateurs</h2>
+            <form class="d-flex justify-content-center flex-wrap" method="post" data-bs-theme="light" >
+                {% csrf_token %}
+                <div class="shadow-lg mb-3" style="width: 700px; margin-right: 100px"><input class="form-control" type="text" name="username" placeholder="" style="border-radius: 0px; 700px;background: var(--bs-body-bg);text-align: center";></div>
+                <div class="shadow-lg mb-3" style="background: var(--bs-secondary-bg);"><button class="btn btn-primary" type="submit" style="">S'abonner </button></div>
+            </form>
+            {{ warning }}
+        </div>
+            <div class="container py-5">
+            <h2 class="fs-4 fw-bolder text-center" style="margin-bottom: 2rem;">Abonnements</h2>
+            <form class="d-flex justify-content-center flex-wrap" method="post" data-bs-theme="light">
+            {% csrf_token %}
+                {% for user in followed_users %}
+                <div class="shadow-lg mb-3" style="margin: 0px;"><input class="form-control" type="text" value="{{ user.username }}"  style="width: 800px;border-radius: 0px" disabled></div>
+                <div class="shadow-lg mb-3"><button class="btn btn-primary" type="button" style="border-radius: 0px; " onclick="location.href = '{% url 'accounts:unfollow' id=user.id %}'">Désabonner</button></div>
+                {% endfor %}
+            </form>
+        </div>
+           <div class="container" style="max-width: 945px" >
+            <h2 class="fs-4 fw-bolder text-center" style="margin-bottom: 2rem;">Abonnés</h2>
+            {% csrf_token %}
+             {% for user in follower %}
+                 <div class="shadow-lg mb-3" style="margin: 0px;"><input class="form-control" type="text" value="{{ user.username }}"  style="width: 100%;border-radius: 0px" disabled></div>
+             {% endfor %}
+               </div>
+    </section>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+

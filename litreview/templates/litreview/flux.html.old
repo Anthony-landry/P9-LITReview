@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{# Load templatetags #}
+{%  load class_tag %}
+
+{# Load CSS and JavaScript #}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}
+    Signin {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    {% static "img/illustrations/register.svg" as register_img %}
+    <section class="py-4 py-md-5 my-5" style="text-align: center;border-color: var(--bs-body-bg);">
+        <div class="container py-md-5">
+            <section class="py-5 mt-5">
+                <div class="container d-flex flex-shrink-1 justify-content-around align-items-center align-content-stretch py-4 py-xl-5">
+                    <button class="btn btn-primary" type="button" style="border-radius: 10px;padding-right: 50px;padding-left: 50px;padding-top: 15px;padding-bottom: 15px;margin: 1rem;"   onclick="window.location.href='{% url 'blog:newticket' %}';">
+                        Demander une critique
+                    </button>
+                    <button class="btn btn-primary" type="button" style="margin: 1rem;border-radius: 10px;padding-right: 50px;padding-left: 50px;padding-top: 15px;padding-bottom: 15px;" onclick="window.location.href='{% url 'blog:newreviewsolo' %}';">
+                        Créer une critique
+                    </button>
+                </div>
+            </section>
+            {% for item in tickets_and_reviews %}
+                {% if item|classname == "Review" %}
+                <section style="border-color: rgb(18, 22, 67);border-top-color: rgb(18,;border-right-color: 22,;border-bottom-color: 67);border-left-color: 22,;">
+                    <div class="container border-primary shadow py-4 py-xl-5">
+                        <div>
+                            {% if user == item.user %}
+                                <p class="card-title ml-2">Vous avez publié une critique</p>
+                            {% else %}
+                                <p class="card-title ml-2">{{ item.user }} a publié une critique</p>
+                            {% endif %}
+                        </div>
+                        <div class="text-end">
+                            <p style="margin-right: 0;">{{ item.time_created }}</p>
+                            <div>
+                                <p class="fs-3 fw-semibold text-start">{{ item.headline }} - {{ item.rating }}</p>
+                            </div>
+                            <div>
+                                <p class="fs-5 text-start">{{ item.body }}</p>
+                            </div>
+                            <div class="border-1 border-primary-subtle shadow" style="border-width: 1px;border-style: solid;padding: 15px;">
+                                {% if item.ticket.user != user %}
+                                    <p class="fs-5 text-start">Ticket - {{ item.ticket.user }}</p>
+                                {% else %}
+                                    <p class="fs-5 text-start">Ticket - Vous</p>
+                                {% endif %}
+                                <p class="fs-5 text-start">{{ item.ticket.title }}</p>
+                                <img class="d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start" src="{{  item.ticket.image_url }}">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {% elif item|classname == "Ticket" %}
+                <section class="py-5 mt-5">
+                    <div class="container border-primary shadow py-4 py-xl-5">
+                        <div>
+                            {% if user == item.user %}
+                                <p class="card-title ml-2">Vous avez demandé une critique</p>
+                            {% else %}
+                                <p class="card-title ml-2">{{ item.user }} a demandé une critique</p>
+                            {% endif %}
+                        </div>
+                        <div class="text-end">
+                            <p style="margin-right: 0;">{{ item.time_created }}</p>
+                            <div>
+                                <p class="fs-5 text-start">{{ item.title }}</p>
+                                <p class="fs-5 text-start">{{ item.description }}</p>
+                                <img class="d-xl-flex d-xxl-flex justify-content-xl-start justify-content-xxl-start" src="{{ item.image_url }}" alt="{{ item.ticket.image }}">
+
+                                {# Si ce ticket a été creer par nous, ou si on a deja repondu, on ne l'affiche pas #}
+                                {%  if item.user_id != user.id and item.id not in user_reviews__ticket_ids %}
+                                <div class="d-xxl-flex justify-content-xxl-end">
+                                    <button class="btn btn-primary text-end d-xxl-flex" type="button" style="border-radius: 10px;padding: 15px 24px;" onclick="window.location.href='{% url 'blog:newreviewticket' id=item.id %} ';">Créer une critique</button>
+                                </div>
+                                {%  endif %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {%  endif %}
+            {% endfor %}
+        </div>
+    </section>
+{% endblock content %}
