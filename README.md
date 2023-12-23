@@ -94,6 +94,15 @@ Ensuite, suivez ces étapes pour installer et exécuter le programme :
     http://127.0.0.1:8000/
     ```
 
+9. Remplir le fichier .env :
+    
+un fichier .env ce trouve à la racine du pojet 
+
+```bash
+.env
+SECRET_KEY='METTRE VOTRE CLE SECRET'
+```
+
 # Utilisation
 
 ## Django administration
