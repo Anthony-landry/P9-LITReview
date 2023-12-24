@@ -81,20 +81,7 @@ Ensuite, suivez ces étapes pour installer et exécuter le programme :
     ```bash
     python manage.py migrate
     ```
-
-7. Vous pouvez maintenant lancer le script principal avec la commande :
-    
-    ```bash
-    python manage.py runserver
-    ```
-
-8. Vous pouvez ensuite utiliser l'applicaton à l'adresse suivante:
-    
-    ```bash
-    http://127.0.0.1:8000/
-    ```
-
-9. Remplir le fichier .env :
+7. Remplir le fichier .env :
     
 un fichier .env ce trouve à la racine du pojet 
 
@@ -102,6 +89,20 @@ un fichier .env ce trouve à la racine du pojet
 .env
 SECRET_KEY='METTRE VOTRE CLE SECRET'
 ```
+
+8. Vous pouvez maintenant lancer le script principal avec la commande :
+    
+    ```bash
+    python manage.py runserver
+    ```
+
+9. Vous pouvez ensuite utiliser l'applicaton à l'adresse suivante:
+    
+    ```bash
+    http://127.0.0.1:8000/
+    ```
+
+
 
 # Utilisation
 
