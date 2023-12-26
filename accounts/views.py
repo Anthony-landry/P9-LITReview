@@ -72,7 +72,7 @@ def follow_view(request):
         user_followed = user.objects.filter(username=request.POST["username"])
         if len(user_followed) == 1 and \
                 not UserFollows.objects.filter(followed_user_id=user_followed[0].id, user_id=request.user.id):
-            if user_followed == request.user:
+            if user_followed[0] != request.user:
                 new_follow = UserFollows()
                 new_follow.user = request.user
                 new_follow.followed_user = user_followed[0]
