@@ -42,7 +42,7 @@ Ensuite, suivez ces étapes pour installer et exécuter le programme :
     git clone https://github.com/Anthony-landry/P9-LITReview.git
     ```
     
-2. Accédez au dossier P4-ChessTournaments.
+2. Accédez au dossier P9-LITReview.
     
 3. Créez un nouvel environnement virtuel en utilisant la commande suivante :
     
