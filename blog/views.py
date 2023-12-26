@@ -89,7 +89,7 @@ class NewReviewSolo(TemplateView):
             self.form_save(new_review_form, review_request)
             return HttpResponseRedirect(self.success_url)
         else:
-            print("errors")
+            # print("errors")
             print(new_ticket_form.errors)
             print(new_review_form.errors)
 
