@@ -1,8 +1,4 @@
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.utils.translation import gettext_lazy as _
-
-from blog.models import  Ticket, Review
+from blog.models import Ticket, Review
 
 from django.forms import ModelForm, IntegerField
 
@@ -70,4 +66,3 @@ class NewReviewForm(ModelForm):
         self.fields['rating'].required = True
         self.fields['body'].label = 'Description'
         self.fields['body'].required = True
-

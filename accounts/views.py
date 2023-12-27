@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, reverse
 
 # contrib auth
@@ -110,7 +109,7 @@ def unfollow_view(request, id):
         )
         if userF:
             userF.delete()
-    except:
+    finally:
         pass
 
     return redirect(reverse('accounts:follow'))
@@ -132,6 +131,7 @@ class ReviewList(ListView):
         )
 
         return tickets_and_reviews
+
 
 def delete_post(request, id):
     post = Review.objects.get(id=id)
@@ -174,7 +174,6 @@ def update_post(request, pk):
 
 
 class TicketUpdate(UpdateView):
-
     model = Ticket
     template_name = "accounts/modifymyticket.html"
     context_object_name = "ticket"

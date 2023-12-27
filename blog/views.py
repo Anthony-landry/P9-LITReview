@@ -1,20 +1,15 @@
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect, reverse
+from django.http import HttpResponseRedirect
 
 # contrib auth
 
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 # generic views
 from django.views.generic import CreateView, TemplateView
 
-from accounts.models import UserFollows
-from blog.models import Ticket, Review
+from blog.models import Ticket
 
 from typing import Optional
-
 
 from blog import forms
 from django.urls import reverse_lazy
@@ -61,7 +56,6 @@ class NewReviewTicket(LoginRequiredMixin, CreateView):
 
 
 class NewReviewSolo(TemplateView):
-
     login_url = 'login/'
     redirect_field_name = 'redirect_to'
     new_ticket_form = forms.NewTicketForm
@@ -89,7 +83,7 @@ class NewReviewSolo(TemplateView):
             self.form_save(new_review_form, review_request)
             return HttpResponseRedirect(self.success_url)
         else:
-            # print("errors")
+            print("errors")
             print(new_ticket_form.errors)
             print(new_review_form.errors)
 
@@ -105,7 +99,6 @@ class NewReviewSolo(TemplateView):
         field can be assigned later on by the model's constructor.
         """
         form.instance.user = self.request.user
-
 
         if review_request:
             review = form.save(commit=False)

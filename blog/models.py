@@ -2,7 +2,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
 from django.templatetags.static import static
-from django_starfield import Stars
 
 
 # Create your models here.
@@ -35,6 +34,7 @@ class Ticket(models.Model):
         if Review.objects.filter(user=self.user, ticket=self):
             return True
         return False
+
 
 class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)

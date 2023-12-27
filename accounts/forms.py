@@ -7,7 +7,6 @@ from blog.models import Ticket
 
 
 class UserCreateForm(UserCreationForm):
-
     class Meta:
         model = User
         # fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
@@ -62,14 +61,18 @@ class UserLoginForm(AuthenticationForm):
         self.fields['username'].label = "Nom d'utilisateur"
         self.fields['password'].label = "Mot de passe"
 
+
 class UpdateTicketForm(forms.ModelForm):
-
     title = forms.CharField(widget=forms.TextInput(attrs={"class": "d-flex flex-shrink-1",
-                                                          "style": "margin-bottom: 2rem;display: flex;width: 62.5em;padding: 10px;"}), label="Titre")
+                                                          "style": "margin-bottom: 2rem;display:\
+                                                           flex;width: 62.5em;padding: 10px;"}),
+                            label="Titre")
 
-
-    description = forms.CharField(widget=forms.TextInput(attrs={"class": "border-primary focus-ring form-control-lg d-flex flex-shrink-1",
-                                                               "style": "display: flex;position: relative;padding-right: 0px;margin-bottom: 4px;margin-right: 6px;width: 50em;height: 20em;"}), label="Description")
+    description = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "border-primary focus-ring form-control-lg d-flex flex-shrink-1",
+                                      "style": "display: flex;position: relative;padding-right: \
+                                      0px;margin-bottom: 4px;margin-right: 6px;width: 50em;height: 20em;"}),
+        label="Description")
 
     class Meta:
         model = Ticket

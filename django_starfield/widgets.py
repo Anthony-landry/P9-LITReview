@@ -5,6 +5,7 @@ STARFIELD_COLOUR = '#f5b301'
 STARFIELD_CODEPOINT = '2605'
 STARFIELD_STARS = 5
 
+
 class Stars(Widget):
     template_name = 'django_starfield/stars.html'
 

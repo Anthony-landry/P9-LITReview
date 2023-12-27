@@ -35,6 +35,7 @@ def flux_view(request):
     }
     return render(request, 'litreview/flux.html', context=context)
 
+
 @login_required(login_url='accounts:login')
 def index(request):
     return redirect("flux")
