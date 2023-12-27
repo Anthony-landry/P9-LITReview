@@ -2,7 +2,7 @@ from blog.models import Ticket, Review
 
 from django.forms import ModelForm, IntegerField
 
-from django_starfield import Stars
+from django_starfield.widgets import Stars
 
 
 class NewTicketForm(ModelForm):
