@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, reverse
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
 # contrib auth
 from django.contrib.auth import logout, get_user_model
@@ -63,54 +64,53 @@ class Logout(RedirectView):
 
 @login_required(login_url='accounts:login')
 def follow_view(request):
-    context = {}
+
     warning = ""
     user = get_user_model()
 
-    if "username" in request.POST:
-        user_followed = user.objects.filter(username=request.POST["username"])
-        if len(user_followed) == 1 and \
-                not UserFollows.objects.filter(followed_user_id=user_followed[0].id, user_id=request.user.id):
-            if user_followed[0] != request.user:
-                new_follow = UserFollows()
-                new_follow.user = request.user
-                new_follow.followed_user = user_followed[0]
-                new_follow.save()
-                # new_follow = UserFollows.objects.create(user=request.user, followed_user=user_followed[0])
+    try:
+        if "username" in request.POST:
+            if request.user.username != request.POST["username"]:
+                user_followed = user.objects.get(username=request.POST["username"])
+                if UserFollows.objects.filter(followed_user=user_followed, user=request.user).exists():
+                    warning = "Vous suivez déjà cet utilisateur."
+                else:
+                    UserFollows.objects.create(user=request.user, followed_user=user_followed)
             else:
                 warning = "Vous ne pouvez pas vous suivre vous-même..."
         else:
-            warning = "Nom d'utilisateur invalide (inexistant ou deja suivi)"
+            warning = "Pas de nom d'utilisateur saisie"
+    except ObjectDoesNotExist:
+        warning = "Nom d'utilisateur invalide."
+    except MultipleObjectsReturned:
+        warning = "Plusieurs utilisateurs trouvés avec ce nom d'utilisateur."
 
-    followed_users = list(user.objects.filter(
-        followed_by__in=UserFollows.objects.filter(
-            user_id=request.user.id
-        )
-    ).exclude(is_superuser=True))
+    # Récupération des utilisateurs suivis et des abonnés
+    followed_users = user.objects.filter(
+        followed_by__user=request.user
+    ).exclude(is_superuser=True).distinct()
 
-    follower = list(user.objects.filter(
-        following__in=UserFollows.objects.filter(
-            followed_user=request.user.id
-        )).exclude(is_superuser=True))
+    followers = user.objects.filter(
+        following__followed_user=request.user
+    ).exclude(is_superuser=True).distinct()
 
-    context["followed_users"] = followed_users
-    context["follower"] = follower
-    context["warning"] = warning
+    context = {
+        "followed_users": followed_users,
+        "follower": followers,
+        "warning": warning
+    }
 
     return render(request, "accounts/abo.html", context=context)
 
 
 @login_required(login_url='accounts:login')
 def unfollow_view(request, id):
-    try:
-        userF = UserFollows.objects.get(
-            user_id=request.user.id,
-            followed_user_id=id
-        )
-        if userF:
-            userF.delete()
-    finally:
-        pass
+    userF = UserFollows.objects.get(
+        user_id=request.user.id,
+        followed_user_id=id
+    )
+    if userF:
+        userF.delete()
 
     return redirect(reverse('accounts:follow'))
 
@@ -135,12 +135,20 @@ class ReviewList(ListView):
 
 def delete_post(request, id):
     post = Review.objects.get(id=id)
+    if post.user != request.user:
+        return redirect('flux')
+        # return HttpResponse('Unauthorized', status=401)
+
     post.delete()
     return redirect('accounts:posts')
 
 
 def delete_ticket(request, pk):
     ticket = Ticket.objects.get(pk=pk)
+    if ticket.user != request.user:
+        return redirect('flux')
+        # return HttpResponse('Unauthorized', status=401)
+
     ticket.delete()
     return redirect('accounts:posts')
 
@@ -153,6 +161,10 @@ def delete_ticket(request, pk):
 
 def update_post(request, pk):
     post = Review.objects.get(pk=pk)
+
+    if post.user != request.user:
+        return redirect('flux')
+        # return HttpResponse('Unauthorized', status=401)
 
     if request.method == "POST":
         updated_title = request.POST.get("title")
