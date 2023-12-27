@@ -3,3 +3,4 @@ venv
 *.pyc
 staticfiles/admin
 staticfiles/bootstrap
+media
